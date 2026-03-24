@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Visit Us — The Main Dive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+.visit-page { padding: 2rem 6rem 6rem; background: var(--black); }
+
+.visit-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 3rem;
+}
+
+/* Hours card */
+.hours-card {
+  background: var(--charcoal); border: 1px solid rgba(200,131,42,0.12); padding: 3rem;
+}
+.hours-card h2 {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.08em;
+  color: var(--cream); margin-bottom: 0.5rem;
+}
+.hours-card .sub { font-size: 0.82rem; color: var(--muted); font-style: italic; margin-bottom: 2rem; font-family: 'Playfair Display', serif; }
+
+.hours-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.hours-row:last-child { border-bottom: none; }
+.hours-row.today { background: rgba(200,131,42,0.06); margin: 0 -1rem; padding: 1rem; border-radius: 2px; border-bottom: none; }
+.hours-row.today .day { color: var(--gold); }
+.hours-row.today::before { content: '← Today'; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); position: absolute; right: 4rem; }
+.hours-row { position: relative; }
+
+.day { font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+.time { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 0.05em; color: var(--cream); }
+.time.late { color: var(--gold); }
+
+/* Info card */
+.info-card {
+  background: var(--charcoal); border: 1px solid rgba(200,131,42,0.12); padding: 3rem;
+  display: flex; flex-direction: column; gap: 2rem;
+}
+.info-block h3 {
+  font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--amber); margin-bottom: 0.8rem; font-weight: 500;
+}
+.info-block .val {
+  font-size: 1rem; color: var(--offwhite); line-height: 1.7;
+}
+.info-block a { color: var(--offwhite); text-decoration: none; transition: color 0.2s; }
+.info-block a:hover { color: var(--gold); }
+.info-block .big-phone {
+  font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: 0.06em;
+  color: var(--gold); text-decoration: none; display: block; margin-top: 0.3rem;
+  transition: color 0.2s;
+}
+.info-block .big-phone:hover { color: var(--amber); }
+
+.payment-note {
+  background: var(--warm); padding: 1.2rem 1.5rem;
+  border-left: 3px solid var(--amber); font-size: 0.85rem; color: var(--offwhite);
+  line-height: 1.6;
+}
+.payment-note strong { color: var(--gold); }
+
+/* Map embed area */
+.map-section {
+  background: var(--charcoal); border: 1px solid rgba(200,131,42,0.12);
+  overflow: hidden; margin-bottom: 3rem;
+}
+.map-header {
+  padding: 2rem 3rem; border-bottom: 1px solid rgba(200,131,42,0.12);
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+}
+.map-header h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.08em; color: var(--cream); }
+
+.map-frame {
+  width: 100%; height: 380px; border: none;
+  filter: invert(90%) hue-rotate(180deg) saturate(0.4);
+}
+
+/* Getting here */
+.getting-here {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  background: rgba(200,131,42,0.1); margin-bottom: 3rem;
+}
+.gh-item {
+  background: var(--charcoal); padding: 2.5rem 2rem; text-align: center;
+  transition: background 0.3s;
+}
+.gh-item:hover { background: var(--warm); }
+.gh-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+.gh-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.08em; color: var(--cream); margin-bottom: 0.5rem; }
+.gh-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.6; }
+
+/* CTA strip */
+.visit-cta {
+  background: var(--warm); padding: 3rem;
+  border: 1px solid rgba(200,131,42,0.15);
+  display: flex; justify-content: space-between; align-items: center; gap: 2rem; flex-wrap: wrap;
+}
+.visit-cta-text h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.06em; color: var(--cream); }
+.visit-cta-text p { font-size: 0.9rem; color: var(--muted); margin-top: 0.4rem; font-style: italic; font-family: 'Playfair Display', serif; }
+.visit-cta-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+@media(max-width:900px){
+  .visit-page{padding:2rem 2rem 4rem;}
+  .visit-grid{grid-template-columns:1fr;}
+  .getting-here{grid-template-columns:1fr;}
+  .visit-cta{flex-direction:column; text-align:center;}
+  .map-frame{height:260px;}
+  .map-header{padding:1.5rem 2rem;}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html"><span>The</span> Main Dive</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="specials.html">Specials</a></li>
+    <li><a href="visit.html" class="active nav-cta">Visit Us</a></li>
+  </ul>
+  <div class="nav-hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="page-hero">
+  <p class="page-eyebrow">Come Find Us</p>
+  <h1 class="page-title">Visit <span class="gold">The Dive</span></h1>
+  <p style="margin-top:1rem;font-family:'Playfair Display',serif;font-style:italic;color:var(--muted);font-size:1rem;max-width:36rem;">
+    Right in the heart of Webster Village. Come hungry, leave happy.
+  </p>
+</div>
+
+<div class="marquee-wrap"><div class="marquee-inner">
+  <span>Open Tuesday – Sunday</span><span class="dot">✦</span><span>Late Night Kitchen</span><span class="dot">✦</span><span>5 W Main St · Webster NY</span><span class="dot">✦</span><span>(585) 626-1000</span><span class="dot">✦</span><span>Cash Preferred · ATM Inside</span><span class="dot">✦</span><span>Fish Fry Every Friday</span><span class="dot">✦</span>
+  <span>Open Tuesday – Sunday</span><span class="dot">✦</span><span>Late Night Kitchen</span><span class="dot">✦</span><span>5 W Main St · Webster NY</span><span class="dot">✦</span><span>(585) 626-1000</span><span class="dot">✦</span><span>Cash Preferred · ATM Inside</span><span class="dot">✦</span><span>Fish Fry Every Friday</span><span class="dot">✦</span>
+</div></div>
+
+<div class="visit-page">
+  <div class="visit-grid reveal">
+    <!-- HOURS -->
+    <div class="hours-card">
+      <h2>Hours</h2>
+      <p class="sub">Kitchen stays open late. Come when you're ready.</p>
+
+      <div class="hours-row" id="row-mon">
+        <span class="day">Monday</span>
+        <span class="time">12:00 PM – 10:00 PM</span>
+      </div>
+      <div class="hours-row" id="row-tue">
+        <span class="day">Tuesday</span>
+        <span class="time">11:00 AM – 11:00 PM</span>
+      </div>
+      <div class="hours-row" id="row-wed">
+        <span class="day">Wednesday</span>
+        <span class="time">11:00 AM – 11:00 PM</span>
+      </div>
+      <div class="hours-row" id="row-thu">
+        <span class="day">Thursday</span>
+        <span class="time">11:00 AM – 11:00 PM</span>
+      </div>
+      <div class="hours-row" id="row-fri">
+        <span class="day">Friday 🐟</span>
+        <span class="time late">11:00 AM – 1:00 AM</span>
+      </div>
+      <div class="hours-row" id="row-sat">
+        <span class="day">Saturday</span>
+        <span class="time late">12:00 PM – 1:00 AM</span>
+      </div>
+      <div class="hours-row" id="row-sun">
+        <span class="day">Sunday</span>
+        <span class="time">12:00 PM – 10:00 PM</span>
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="info-card">
+      <div class="info-block">
+        <h3>Phone</h3>
+        <a class="big-phone" href="tel:5856261000">(585) 626-1000</a>
+        <p class="val" style="margin-top:0.5rem;font-size:0.82rem;">Call ahead for questions or large groups</p>
+      </div>
+
+      <div class="info-block">
+        <h3>Address</h3>
+        <div class="val">
+          5 W Main St, Suite 1<br/>
+          Webster, NY 14580
+        </div>
+        <div style="margin-top:1rem;">
+          <a href="https://maps.google.com/?q=5+W+Main+St+Webster+NY+14580" target="_blank" class="btn-primary" style="font-size:0.72rem;padding:0.7rem 1.5rem;">Open in Google Maps</a>
+        </div>
+      </div>
+
+      <div class="info-block">
+        <h3>Payment</h3>
+        <div class="payment-note">
+          <strong>Cash preferred.</strong> Don't have any? No problem — there's an ATM inside the bar.
+        </div>
+      </div>
+
+      <div class="info-block">
+        <h3>Good to Know</h3>
+        <div class="val" style="font-size:0.87rem;color:var(--muted);line-height:1.8;">
+          🐟 Fish Fry every Friday<br/>
+          🌙 Kitchen open late on Fri &amp; Sat<br/>
+          🍺 Drink specials daily<br/>
+          👋 Owners work the bar &amp; kitchen
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAP -->
+  <div class="map-section reveal">
+    <div class="map-header">
+      <h2>📍 Find Us in Webster Village</h2>
+      <a href="https://maps.google.com/?q=5+W+Main+St+Webster+NY+14580" target="_blank" class="btn-ghost" style="font-size:0.7rem;padding:0.6rem 1.2rem;">Get Directions ›</a>
+    </div>
+    <iframe
+      class="map-frame"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2928.0!2d-77.4275!3d43.2107!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s5+W+Main+St%2C+Webster%2C+NY+14580!5e0!3m2!1sen!2sus!4v1"
+      allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+      title="The Main Dive location map">
+    </iframe>
+  </div>
+
+  <!-- GETTING HERE -->
+  <div class="getting-here reveal">
+    <div class="gh-item">
+      <span class="gh-icon">🚗</span>
+      <div class="gh-title">By Car</div>
+      <div class="gh-desc">Right on W Main St in Webster Village — easy to find, even easier to park nearby on the street or in the lot.</div>
+    </div>
+    <div class="gh-item">
+      <span class="gh-icon">🍺</span>
+      <div class="gh-title">Once You're In</div>
+      <div class="gh-desc">Grab a seat at the bar or a table. Someone from the team will be with you fast — they're hands-on here.</div>
+    </div>
+    <div class="gh-item">
+      <span class="gh-icon">💵</span>
+      <div class="gh-title">Heads Up</div>
+      <div class="gh-desc">Cash is preferred. ATM is inside if you need it. No stress — we've got you covered.</div>
+    </div>
+  </div>
+
+  <!-- CTA STRIP -->
+  <div class="visit-cta reveal">
+    <div class="visit-cta-text">
+      <h3>See You at The Dive</h3>
+      <p>5 W Main St, Suite 1 · Webster, NY 14580</p>
+    </div>
+    <div class="visit-cta-btns">
+      <a href="tel:5856261000" class="btn-primary">(585) 626-1000</a>
+      <a href="menu.html" class="btn-ghost">View Menu</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo"><span>The</span> Main Dive</div>
+  <div class="footer-center">
+    <p class="footer-copy">© 2025 The Main Dive · Webster, NY · All Rights Reserved</p>
+    <p class="footer-tagline">Where Eating &amp; Drinking is Worth Repeating</p>
+  </div>
+  <div class="footer-right">
+    <a href="tel:5856261000">(585) 626-1000</a><br/>
+    5 W Main St Suite 1<br/>Webster, NY 14580
+  </div>
+</footer>
+
+<script>
+  // Highlight today's hours row
+  const days = ['sun','mon','tue','wed','thu','fri','sat'];
+  const today = days[new Date().getDay()];
+  const todayRow = document.getElementById('row-' + today);
+  if (todayRow) todayRow.classList.add('today');
+
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e,i) => { if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('visible'),i*100); obs.unobserve(e.target); } });
+  }, {threshold:0.08});
+  reveals.forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

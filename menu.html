@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Menu — The Main Dive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<style>
+.menu-page { padding: 2rem 6rem 6rem; background: var(--black); }
+
+/* Category tabs */
+.menu-tabs {
+  display: flex; gap: 0; border-bottom: 1px solid rgba(200,131,42,0.15);
+  margin-bottom: 4rem; flex-wrap: wrap;
+}
+.tab-btn {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 0.12em;
+  color: var(--muted); background: none; border: none; padding: 1rem 2rem;
+  cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.25s;
+  text-transform: uppercase;
+}
+.tab-btn:hover { color: var(--offwhite); }
+.tab-btn.active { color: var(--gold); border-bottom-color: var(--amber); }
+
+/* Section blocks */
+.menu-section { display: none; }
+.menu-section.active { display: block; }
+
+.menu-section-title {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: clamp(2rem, 4vw, 3rem); color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.menu-section-sub {
+  font-size: 0.82rem; color: var(--muted); letter-spacing: 0.08em;
+  margin-bottom: 3rem; font-style: italic;
+}
+
+/* Item list layout */
+.items-list { display: flex; flex-direction: column; gap: 0; }
+.menu-item {
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 2rem; align-items: start;
+  padding: 1.6rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.2s;
+}
+.menu-item:last-child { border-bottom: none; }
+.menu-item:hover { background: rgba(200,131,42,0.03); margin: 0 -1rem; padding: 1.6rem 1rem; }
+
+.item-left {}
+.item-name {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.35rem;
+  letter-spacing: 0.08em; color: var(--cream); margin-bottom: 0.35rem;
+}
+.item-name .badge {
+  display: inline-block; margin-left: 0.6rem;
+  padding: 0.15rem 0.5rem; font-size: 0.55rem; letter-spacing: 0.15em;
+  background: rgba(200,131,42,0.15); color: var(--amber);
+  border-radius: 2px; vertical-align: middle; font-family: 'DM Sans', sans-serif; font-weight: 500;
+}
+.item-desc {
+  font-size: 0.88rem; color: var(--muted); line-height: 1.65; max-width: 55rem;
+}
+.item-note {
+  font-size: 0.78rem; color: var(--amber); margin-top: 0.4rem;
+  font-style: italic;
+}
+
+.item-price {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem;
+  color: var(--gold); white-space: nowrap; letter-spacing: 0.05em;
+}
+
+/* Wings special layout */
+.wings-sizes {
+  font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem; letter-spacing: 0.05em;
+}
+.wings-sizes strong { color: var(--offwhite); }
+.wing-flavors {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem 3rem; margin-top: 1rem;
+}
+.wing-flavor {
+  font-size: 0.88rem; color: var(--offwhite); display: flex; align-items: flex-start; gap: 0.5rem;
+}
+.wing-flavor::before { content: '·'; color: var(--amber); flex-shrink: 0; }
+.wing-flavor .fire { color: var(--red); font-size: 0.7rem; font-style: italic; display: block; }
+
+/* Plates special */
+.plate-block {
+  background: var(--charcoal); border: 1px solid rgba(200,131,42,0.1);
+  padding: 2.5rem; margin-top: 2rem; border-radius: 2px;
+}
+.plate-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; }
+.plate-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.08em; color: var(--cream); }
+.plate-price { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--gold); }
+.plate-choose { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--amber); margin-bottom: 0.6rem; font-weight: 500; }
+.plate-options { font-size: 0.88rem; color: var(--offwhite); line-height: 1.75; }
+.plate-note { margin-top: 1rem; font-size: 0.82rem; color: var(--muted); font-style: italic; }
+.plate-sauce { color: var(--amber); }
+
+/* Sides grid */
+.sides-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  background: rgba(200,131,42,0.1); margin-top: 2rem;
+}
+.side-item {
+  background: var(--charcoal); padding: 1.8rem 1.5rem;
+  display: flex; justify-content: space-between; align-items: center;
+  transition: background 0.25s;
+}
+.side-item:hover { background: var(--warm); }
+.side-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 0.08em; color: var(--cream); }
+.side-price { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--gold); }
+
+/* Pizza block */
+.pizza-block {
+  background: var(--charcoal); border: 1px solid rgba(200,131,42,0.1);
+  padding: 2.5rem; margin-top: 2rem; display: grid;
+  grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;
+}
+.pizza-headline { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--gold); line-height: 1; }
+.pizza-size { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--amber); margin-bottom: 0.5rem; }
+.pizza-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+.pizza-price { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--cream); text-align: right; }
+.pizza-sub { font-size: 0.8rem; color: var(--muted); text-align: right; margin-top: 0.5rem; }
+
+/* Disclaimer */
+.disclaimer-row {
+  margin-top: 4rem; padding: 1.2rem 1.8rem;
+  border: 1px solid rgba(200,131,42,0.12); border-radius: 2px;
+  display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap;
+}
+.disc-item { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.04em; flex: 1; min-width: 200px; }
+.disc-item::before { content: '📌 '; }
+
+@media(max-width:900px){
+  .menu-page{padding:2rem 2rem 4rem;}
+  .menu-tabs{gap:0;}
+  .tab-btn{padding:0.8rem 1.2rem; font-size:0.85rem;}
+  .menu-item{grid-template-columns:1fr auto; gap:1rem;}
+  .wing-flavors{grid-template-columns:1fr;}
+  .sides-grid{grid-template-columns:1fr 1fr;}
+  .pizza-block{grid-template-columns:1fr;}
+  .pizza-price{text-align:left;}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html"><span>The</span> Main Dive</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="menu.html" class="active">Menu</a></li>
+    <li><a href="specials.html">Specials</a></li>
+    <li><a href="visit.html" class="nav-cta">Visit Us</a></li>
+  </ul>
+  <div class="nav-hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <p class="page-eyebrow">What We're Serving</p>
+  <h1 class="page-title">The <span class="gold">Menu</span></h1>
+  <p style="margin-top:1rem;font-family:'Playfair Display',serif;font-style:italic;color:var(--muted);font-size:1rem;max-width:36rem;">
+    Everything made with care. Sauces homemade. Plates built fresh. Some things made famous by regulars who can't stop ordering them.
+  </p>
+</div>
+
+<div class="marquee-wrap"><div class="marquee-inner">
+  <span>Smash Burgers</span><span class="dot">✦</span><span>Crispy Wings</span><span class="dot">✦</span><span>Trash Plates</span><span class="dot">✦</span><span>Fish Fry Fridays</span><span class="dot">✦</span><span>Personal Pizzas</span><span class="dot">✦</span><span>Late Night Eats</span><span class="dot">✦</span><span>Homemade Sauces</span><span class="dot">✦</span><span>Cold Drinks</span><span class="dot">✦</span>
+  <span>Smash Burgers</span><span class="dot">✦</span><span>Crispy Wings</span><span class="dot">✦</span><span>Trash Plates</span><span class="dot">✦</span><span>Fish Fry Fridays</span><span class="dot">✦</span><span>Personal Pizzas</span><span class="dot">✦</span><span>Late Night Eats</span><span class="dot">✦</span><span>Homemade Sauces</span><span class="dot">✦</span><span>Cold Drinks</span><span class="dot">✦</span>
+</div></div>
+
+<div class="menu-page">
+  <!-- TABS -->
+  <div class="menu-tabs">
+    <button class="tab-btn active" onclick="showTab('appetizers',this)">Appetizers</button>
+    <button class="tab-btn" onclick="showTab('burgers',this)">Burgers &amp; Sandwiches</button>
+    <button class="tab-btn" onclick="showTab('wings',this)">Wings</button>
+    <button class="tab-btn" onclick="showTab('plates',this)">Plates</button>
+    <button class="tab-btn" onclick="showTab('pizza',this)">Pizza</button>
+    <button class="tab-btn" onclick="showTab('sides',this)">Sides</button>
+  </div>
+
+  <!-- APPETIZERS -->
+  <div class="menu-section active" id="tab-appetizers">
+    <h2 class="menu-section-title">Appetizers</h2>
+    <div class="items-list">
+      <div class="menu-item">
+        <div class="item-left">
+          <div class="item-name">Dive Fries</div>
+          <div class="item-desc">House-made cheese sauce over your choice of fries topped with bacon &amp; scallions</div>
+        </div>
+        <div class="item-price">$12</div>
+      </div>
+      <div class="menu-item">
+        <div class="item-left">
+          <div class="item-name">Mini Pretzel Stix</div>
+          <div class="item-desc">Served with house-made pub cheese &amp; Benny's Pub Mustard</div>
+        </div>
+        <div class="item-price">$10</div>
+      </div>
+      <div class="menu-item">
+        <div class="item-left">
+          <div class="item-name">Jalapeño Popper Pretzel</div>
+          <div class="item-desc">Jumbo baked pretzel topped with jalapeño cream cheese &amp; cheddar cheese</div>
+        </div>
+        <div class="item-price">$14</div>
+      </div>
+      <div class="menu-item">
+        <div class="item-left">
+          <div class="item-name">Mozz Squares</div>
+          <div class="item-desc">House-made mozzarella squares breaded to order &amp; served with marinara sauce</div>
+        </div>
+        <div class="item-price">$10</div>
+      </div>
+      <div class="menu-item">
+        <div class="item-left">
+          <div class="item-name">Fried Pickles</div>
+          <div class="item-desc">Served with our signature dive sauce</div>
+        </div>
+        <div class="item-price">$9</div>
+      </div>
+      <div class="menu-item">
+        <div class="item-left">
+          <div class="item-name">Dive Plate Potato Skins</div>
+          <div class="item-desc">Fried potato skins filled with meat hot, mac salad &amp; American cheese</div>
+        </div>
+        <div class="item-price">$13</div>
+      </div>
+      <div class="menu-item">
+        <div class="item-left">
+          <div class="item-name">Fried Mushrooms</div>
+          <div class="item-desc">Fried portobello mushrooms served with a truffle mayo</div>
+        </div>
+        <div class="item-price">$10</div>
+      </div>
+      <div class="menu-item">
+        <div class="item-left">
+          <div class="item-name">Chicken Tendies</div>
+          <div class="item-desc">Breaded &amp; fried chicken tenders served with fries and Benny's Pub Mustard</div>
+        </div>
+        <div class="item-price">$12</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BURGERS & SANDWICHES -->
+  <div class="menu-section" id="tab-burgers">
+    <h2 class="menu-section-title">Burgers, Wraps &amp; Sandwiches</h2>
+    <p class="menu-section-sub">All served with house-made sour cream &amp; onion chips</p>
+    <div class="items-list">
+      <div class="menu-item">
+        <div class="item-left">
+          <div class="item-name">Dive Smash Burger <span class="badge">Fan Favorite</span></div>
+          <div class="item-desc">6oz smash burger topped with shredded lettuce, caramelized onions, sliced pickles &amp; dive sauce</div>
+        </div>
+        <div class="item-price">$15</div>
+      </div>
+      <div class="menu-item">
+        <div class="item-left">
+          <div class="item-name">American Smash</div>
+          <div class="item-desc">6oz smash burger topped with American cheese, lettuce, tomato, bacon, diced onion &amp; mayo</div>
+        </div>
+        <div class="item-price">$15</div>
+      </div>
+      <div class="menu-item">
+        <div class="item-left">
+          <div class="item-name">Pickle Smash</div>
+          <div class="item-desc">6oz smash burger topped with swiss cheese, fried pickle chips &amp; dive sauce</div>
+        </div>
+        <div class="item-price">$15</div>
+      </div>
+      <div class="menu-item">
+        <div class="item-left">
+          <div class="item-name">Mushroom Swiss Smash</div>
+          <div class="item-desc">6oz smash burger topped with fried portobello mushrooms, swiss &amp; truffle mayo</div>
+        </div>
+        <div class="item-price">$16</div>
+      </div>
+      <div class="menu-item">
+        <div class="item-left">
+          <div class="item-name">Veggie Burger</div>
+          <div class="item-desc">Impossible patty topped with choice of cheese, lettuce, tomato &amp; onion</div>
+        </div>
+        <div class="item-price">$16</div>
+      </div>
+      <div class="menu-item">
+        <div class="item-left">
+          <div class="item-name">Just a Cheeseburger</div>
+          <div class="item-desc">6oz burger with American cheese. Simple, no frills, absolutely satisfying.</div>
+        </div>
+        <div class="item-price">$6</div>
+      </div>
+      <div class="menu-item">
+        <div class="item-left">
+          <div class="item-name">Hot Honey Chicken Sammy</div>
+          <div class="item-desc">Crispy fried chicken dripping with hot honey, topped with shredded lettuce &amp; tangy pickles</div>
+        </div>
+        <div class="item-price">$16</div>
+      </div>
+      <div class="menu-item">
+        <div class="item-left">
+          <div class="item-name">Chicken Sammy</div>
+          <div class="item-desc">Marinated grilled chicken topped with lettuce, tomato, onion &amp; mayo</div>
+          <div class="item-note">Add cheese +$0.75</div>
+        </div>
+        <div class="item-price">$15</div>
+      </div>
+      <div class="menu-item">
+        <div class="item-left">
+          <div class="item-name">Buffalo Chicken Wrap <span class="badge">Fan Favorite</span></div>
+          <div class="item-desc">Crispy breaded chicken tossed in buffalo, cheddar, lettuce, tomato &amp; blue cheese</div>
+        </div>
+        <div class="item-price">$14</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WINGS -->
+  <div class="menu-section" id="tab-wings">
+    <h2 class="menu-section-title">Wings</h2>
+    <p class="menu-section-sub">Wing prices are subject to change at any time, like your personality.</p>
+
+    <div class="wings-sizes">
+      <strong>Traditional Wings:</strong> 6 for $10 &nbsp;·&nbsp; 12 for $15<br/>
+      <strong>House-Made Boneless:</strong> 6 for $9 &nbsp;·&nbsp; 12 for $13
+    </div>
+    <p style="font-size:0.78rem;color:var(--muted);font-style:italic;margin-bottom:1.5rem;">Yes, we know you'll order ranch. We forgive you. &nbsp;|&nbsp; No, you can't order all flats.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;">
+      <div>
+        <p class="section-label" style="margin-bottom:1rem;">Classic Flavors</p>
+        <div class="wing-flavors" style="grid-template-columns:1fr;">
+          <div class="wing-flavor">Dry Cajun</div>
+          <div class="wing-flavor">Mango Habanero</div>
+          <div class="wing-flavor">Garlic Parm</div>
+          <div class="wing-flavor">Buffalo</div>
+          <div class="wing-flavor">BBQ</div>
+          <div class="wing-flavor">Korean BBQ</div>
+          <div class="wing-flavor">Dive Wing Sauce <span style="font-size:0.75rem;color:var(--muted);font-style:italic;">(hot honey, buffalo &amp; garlic parm blend)</span></div>
+          <div class="wing-flavor">Hot Honey BBQ</div>
+          <div class="wing-flavor">Hot Honey</div>
+        </div>
+      </div>
+      <div>
+        <p class="section-label" style="margin-bottom:1rem;">Signature Flavors</p>
+        <div class="wing-flavors" style="grid-template-columns:1fr;">
+          <div class="wing-flavor">
+            <span><strong style="color:var(--cream);">Cloud Nine</strong> <em style="font-size:0.75rem;color:var(--amber);">Ohhh, Lordee!</em><br/><span style="font-size:0.78rem;color:var(--muted);">A blend of sweet &amp; tangy flavors</span></span>
+          </div>
+          <div class="wing-flavor">
+            <span><strong style="color:var(--cream);">Sweet Purgatory</strong> <em style="font-size:0.75rem;color:var(--amber);">Ohhh, Lordee!</em><br/><span style="font-size:0.78rem;color:var(--muted);">A perfect balance of sweet &amp; heat</span></span>
+          </div>
+          <div class="wing-flavor">
+            <span><strong style="color:var(--red);">Devil's Ecstasy</strong> <em style="font-size:0.75rem;color:var(--amber);">Ohhh, Lordee!</em><br/><span style="font-size:0.78rem;color:var(--red);">⚠️ Warning: Hotter than your ex</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLATES -->
+  <div class="menu-section" id="tab-plates">
+    <h2 class="menu-section-title">Plates</h2>
+    <div class="plate-block">
+      <div class="plate-header">
+        <div class="plate-name">The Dive Plate</div>
+        <div class="plate-price">$14</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;">
+        <div>
+          <p class="plate-choose">Choose Two Sides:</p>
+          <p class="plate-options">Home Fries &nbsp;·&nbsp; Regular Fries &nbsp;·&nbsp; Mac Salad &nbsp;·&nbsp; Baked Beans<br/>
+          <span style="font-size:0.82rem;color:var(--muted);">Curly Fries +$1.50 &nbsp;·&nbsp; Waffle Fries +$1.50</span></p>
+        </div>
+        <div>
+          <p class="plate-choose">Choose Your Protein:</p>
+          <p class="plate-options">
+            One 6oz Smash Cheese Burger <span style="font-size:0.8rem;color:var(--muted);">(want 2 burgers? +$4)</span><br/>
+            2 White Hots &nbsp;·&nbsp; 2 Red Hots<br/>
+            Chicken Tenders<br/>
+            Veggie Burgers <span style="font-size:0.8rem;color:var(--muted);">+$3</span>
+          </p>
+        </div>
+      </div>
+      <p class="plate-note">Topped with onions and meat hot sauce by <span class="plate-sauce">Suavé Sauce</span><br/>
+      <em>(Meat hot sauce or veggie meat hot sauce available)</em></p>
+    </div>
+  </div>
+
+  <!-- PIZZA -->
+  <div class="menu-section" id="tab-pizza">
+    <h2 class="menu-section-title">Personal Pizza</h2>
+    <div class="pizza-block">
+      <div>
+        <p class="pizza-size">10 Inch Pizza</p>
+        <div class="pizza-headline">10"<br/>FOR $10</div>
+        <div style="margin-top:1rem;">
+          <p class="pizza-desc">Size does matter... Big enough to share, if that's your thing.</p>
+          <p style="margin-top:1rem;font-size:0.9rem;color:var(--offwhite);">
+            <strong style="color:var(--cream);">Cheese</strong> or <strong style="color:var(--cream);">Pepperoni</strong><br/>
+            <span style="font-size:0.82rem;color:var(--muted);">Add Hot Honey Drizzle +$1</span>
+          </p>
+          <p style="margin-top:1rem;font-size:0.78rem;color:var(--muted);font-style:italic;">Want more toppings? Well, you should've brought some.</p>
+        </div>
+      </div>
+      <div>
+        <div class="pizza-price">$10</div>
+        <div class="pizza-sub">Cheese or Pepperoni</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDES -->
+  <div class="menu-section" id="tab-sides">
+    <h2 class="menu-section-title">Sides</h2>
+    <div class="sides-grid">
+      <div class="side-item"><span class="side-name">French Fries</span><span class="side-price">$3</span></div>
+      <div class="side-item"><span class="side-name">Home Fries</span><span class="side-price">$3</span></div>
+      <div class="side-item"><span class="side-name">Waffle Fries</span><span class="side-price">$5</span></div>
+      <div class="side-item"><span class="side-name">Curly Fries</span><span class="side-price">$5</span></div>
+      <div class="side-item"><span class="side-name">Sweet Potato Fries</span><span class="side-price">$5</span></div>
+      <div class="side-item"><span class="side-name">Sour Cream &amp; Onion Chips</span><span class="side-price">$3</span></div>
+      <div class="side-item"><span class="side-name">Mac Salad</span><span class="side-price">$3</span></div>
+    </div>
+  </div>
+
+  <!-- DISCLAIMERS -->
+  <div class="disclaimer-row">
+    <p class="disc-item">Cash preferred · ATM available inside</p>
+    <p class="disc-item">We reserve the right to refuse service to anyone</p>
+    <p class="disc-item">Tipping is optional, that is true. We reserve the right to apply auto-gratuity for you.</p>
+    <p class="disc-item">Soup of the Day: Ask your server</p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo"><span>The</span> Main Dive</div>
+  <div class="footer-center">
+    <p class="footer-copy">© 2025 The Main Dive · Webster, NY · All Rights Reserved</p>
+    <p class="footer-tagline">Where Eating &amp; Drinking is Worth Repeating</p>
+  </div>
+  <div class="footer-right">
+    <a href="tel:5856261000">(585) 626-1000</a><br/>
+    5 W Main St Suite 1<br/>Webster, NY 14580
+  </div>
+</footer>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.menu-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top: document.querySelector('.menu-tabs').offsetTop - 80, behavior: 'smooth'});
+}
+</script>
+</body>
+</html>
